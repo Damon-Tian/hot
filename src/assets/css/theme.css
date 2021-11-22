@@ -1,0 +1,38 @@
+:root{
+    /* --color:#333;
+    --bg-color:white;
+    --shadow:rgba(0 , 0, 0, 0.52);
+    --shadow-dark:rgba(0,0,0,0.22);
+    --border-color:transparent; */
+    --red:#b13f3f;
+    --yellow:#ffd900; 
+    --color:white;
+    --bg-color:black;
+    --shadow:#00000030;
+    --shadow-dark:#00000080;
+    --border-color:white;
+}
+
+.dark{
+    --color:white;
+    --bg-color:black;
+    --shadow:#00000030;
+    --shadow-dark:#00000080;
+    --border-color:white;
+}
+@font-face {
+    font-family: "rainy";
+    src: url("./fonts/rainy.ttf");
+}
+body {
+    font: 16px rainy, -apple-system, BlinkMacSystemFont, Helvetica Neue,
+          Helvetica, Arial, Hiragino Sans GB, Microsoft YaHei, sans-serif;
+}
+
+.text-shadow{
+    text-shadow: 1px 0 2px var(--color);
+}
+.d-content{
+    margin: 0 auto;
+    max-width: 1000px;
+}
