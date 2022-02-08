@@ -21,6 +21,10 @@ const router = [
     path: "/zhihu",
     component: () => import("../pages/zhihu.vue"),
   },
+  {
+    path: "/pic",
+    component: () => import("../pages/pic.vue"),
+  },
 ];
 
 export default createRouter({

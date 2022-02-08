@@ -40,3 +40,32 @@ export async function getZhihu() {
   console.log(res);
   return res;
 }
+
+export async function getPic() {
+  let res = await instance.get("/pic");
+  console.log(res);
+  return res;
+}
+
+export async function deletePic(id) {
+  let res = await instance.get("/pic/delete/" + id);
+  console.log(res);
+  return res;
+}
+
+export async function upload(file) {
+  return new Promise(async (resolve, reject) => {
+    let res = await instance.post("/upload", formData(file), {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    resolve(res);
+  });
+}
+
+function formData(data) {
+  let formData = new FormData();
+  for (let i in data) {
+    formData.append(i, data[i]);
+  }
+  return formData;
+}

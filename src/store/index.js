@@ -14,7 +14,10 @@ export const useLoadingStore = defineStore("loading", () => {
     { type: "movie", src: "/img/movie.jpeg" },
     { type: "tv", src: "/img/tv2.jpg" },
     { type: "book", src: "/img/book.jpg" },
+    { type: "pic", src: "" },
   ];
+
+  const damon = localStorage.getItem("damon") || false;
 
   function changeLoading(value) {
     loading.value = value;
@@ -60,5 +63,7 @@ export const useLoadingStore = defineStore("loading", () => {
 
     backImg,
     setBackImg,
+
+    damon,
   };
 });

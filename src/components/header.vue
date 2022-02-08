@@ -13,6 +13,7 @@ const links = reactive([
   { name: "知乎", path: "/zhihu", active: false },
   { name: "哔哩哔哩热门", path: "/bilibili", active: false },
   { name: "豆瓣", path: "/douban", active: false },
+  { name: "图片", path: "/pic", active: false },
 ]);
 
 watch(
