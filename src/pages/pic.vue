@@ -1,8 +1,10 @@
 <script setup>
-import { ref, nextTick, onMounted, onBeforeUnmount } from "vue";
+import { ref, nextTick, onMounted, onBeforeUnmount, watch } from "vue";
 import { upload as uploadFn, getPic, deletePic } from "@/axios";
 import { useLoadingStore } from "@/store";
 import { setBackImage } from "@/use";
+import "viewerjs/dist/viewer.css";
+import { api as Viewer } from "v-viewer";
 setBackImage("pic");
 import loadingPic from "@/assets/img/loading.gif";
 const { damon } = useLoadingStore();
@@ -21,13 +23,14 @@ const upload = async (val) => {
         height: img.height,
       };
       await uploadFn({ ...compute, file });
-      getData(true);
+      initDataFn();
     };
     img.src = e.target.result;
   };
   file && reader.readAsDataURL(file);
 };
 
+const images = ref([]);
 const list = ref([]);
 const listOne = ref([]);
 const listTwo = ref([]);
@@ -88,7 +91,8 @@ function getHeight(list) {
   });
   return height;
 }
-
+const isLoading = ref(true);
+let initData = true;
 await getData(true);
 function loadImgs() {
   let imgs = document.querySelectorAll(".d-pic img");
@@ -109,10 +113,21 @@ function loadImgs() {
     }
   }
 }
-onMounted(() => {
+
+const initDataFn = () => {
+  getData(true);
   setTimeout(() => {
     loadImgs();
+  }, 200);
+  imgBlock.value = "";
+};
+onMounted(() => {
+  setTimeout(() => {
+    getData().then((res) => {
+      loadImgs();
+    });
   }, 1000);
+
   document.querySelector(".app-content").addEventListener("scroll", loadImgs);
 });
 onBeforeUnmount(() => {
@@ -122,11 +137,23 @@ onBeforeUnmount(() => {
 });
 async function getData(isRefresh) {
   return new Promise(async (resolve, reject) => {
+    initData = false;
     if (isRefresh) {
+      initData = true;
       clearData();
     }
+    if (!initData) {
+      resolve(true);
+      return;
+    }
+    if (isRefresh) {
+    }
     list.value = await getPic();
-    resolve("success");
+    images.value = list.value.map(
+      (item) => import.meta.env.VITE_SERVER_URL + item.src
+    );
+    resolve(true);
+    isLoading.value = false;
     nextTick(() => {
       displayData(list.value, 0);
     });
@@ -137,12 +164,28 @@ const getUrl = (src, e) => {
   let preUrl = import.meta.env.VITE_SERVER_URL;
   return preUrl + src;
 };
+
+const deletePicture = async (id) => {
+  if (confirm("确认删除吗？")) {
+    let res = await deletePic(id);
+    initDataFn();
+  }
+};
+
+const imgClick = (item) => {
+  const index = images.value.findIndex((i) => i.includes(item.src));
+  Viewer({
+    images: images.value,
+    options: {
+      initialViewIndex: index,
+    },
+  });
+};
 </script>
 
 <template>
   <div class="d-content d-picture">
-    <input type="file" ref="imgBlock" :onchange="upload" />
-    <p><span @click="imgBlock.value = ''">clear</span></p>
+    <input v-if="damon" type="file" ref="imgBlock" :onchange="upload" />
 
     <div class="d-pic">
       <div class="d-pic-block" ref="list1">
@@ -151,8 +194,10 @@ const getUrl = (src, e) => {
             :src="loadingPic"
             :data-src="getUrl(item.src)"
             :title="item.name"
+            :style="{ height: item.realHeight + 'px' }"
+            @click="imgClick(item)"
           />
-          <span v-if="damon" @click="deletePic(item.id)">删除</span>
+          <span v-if="damon" @click="deletePicture(item.id)">删除</span>
         </div>
       </div>
       <div class="d-pic-block" ref="list2">
@@ -161,8 +206,10 @@ const getUrl = (src, e) => {
             :src="loadingPic"
             :data-src="getUrl(item.src)"
             :title="item.name"
+            :style="{ height: item.realHeight + 'px' }"
+            @click="imgClick(item)"
           />
-          <span v-if="damon" @click="deletePic(item.id)">删除</span>
+          <span v-if="damon" @click="deletePicture(item.id)">删除</span>
         </div>
       </div>
       <div class="d-pic-block" ref="list3">
@@ -171,8 +218,10 @@ const getUrl = (src, e) => {
             :src="loadingPic"
             :data-src="getUrl(item.src)"
             :title="item.name"
+            :style="{ height: item.realHeight + 'px' }"
+            @click="imgClick(item)"
           />
-          <span v-if="damon" @click="deletePic(item.id)">删除</span>
+          <span v-if="damon" @click="deletePicture(item.id)">删除</span>
         </div>
       </div>
     </div>
@@ -194,6 +243,11 @@ const getUrl = (src, e) => {
         text-align: center;
         margin-bottom: 10px;
         img {
+          cursor: pointer;
+          transition: all 0.3s;
+          &:hover {
+            transform: scale(1.05);
+          }
         }
         span {
           position: absolute;

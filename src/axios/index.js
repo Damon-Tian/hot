@@ -1,9 +1,7 @@
 import axios from "axios";
 
 let dev = import.meta.env.DEV;
-const baseURL = dev
-  ? "http://127.0.0.1:2222"
-  : "http://something.wmelon.cn:2222";
+const baseURL = dev ? "http://127.0.0.1:2222" : "";
 const timeout = 50000;
 
 const instance = axios.create({
@@ -17,7 +15,7 @@ instance.interceptors.request.use((config) => {
 
 instance.interceptors.response.use((res) => {
   if (res.data.code == 200) {
-    return res.data.data;
+    return res.data?.data || res.data;
   } else {
     return res.statusText;
   }
