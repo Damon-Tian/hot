@@ -1,7 +1,8 @@
 import axios from "axios";
 
-let dev = import.meta.env.DEV;
-const baseURL = dev ? "http://127.0.0.1:2222" : "";
+const baseURL = import.meta.env.VITE_SERVER_URL;
+// ? "http://127.0.0.1:2222"
+// : "http://something.wmelon.cn:2222";
 const timeout = 50000;
 
 const instance = axios.create({

@@ -197,7 +197,7 @@ const imgClick = (item) => {
             :style="{ height: item.realHeight + 'px' }"
             @click="imgClick(item)"
           />
-          <span v-if="damon" @click="deletePicture(item.id)">删除</span>
+          <span v-if="damon" @click="deletePicture(item._id)">删除</span>
         </div>
       </div>
       <div class="d-pic-block" ref="list2">
@@ -209,7 +209,7 @@ const imgClick = (item) => {
             :style="{ height: item.realHeight + 'px' }"
             @click="imgClick(item)"
           />
-          <span v-if="damon" @click="deletePicture(item.id)">删除</span>
+          <span v-if="damon" @click="deletePicture(item._id)">删除</span>
         </div>
       </div>
       <div class="d-pic-block" ref="list3">
@@ -221,7 +221,7 @@ const imgClick = (item) => {
             :style="{ height: item.realHeight + 'px' }"
             @click="imgClick(item)"
           />
-          <span v-if="damon" @click="deletePicture(item.id)">删除</span>
+          <span v-if="damon" @click="deletePicture(item._id)">删除</span>
         </div>
       </div>
     </div>
