@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const baseURL = import.meta.env.VITE_SERVER_URL;
+// const baseURL = "http://something.wmelon.cn:2222";
 // ? "http://127.0.0.1:2222"
 // : "http://something.wmelon.cn:2222";
 const timeout = 50000;

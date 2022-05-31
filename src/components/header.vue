@@ -10,7 +10,7 @@ const route = useRoute();
 const path = route.path;
 const links = reactive([
   { name: "home", path: "/home", active: false },
-  { name: "知乎", path: "/zhihu", active: false },
+  { name: "知乎", path: "/", active: false },
   { name: "哔哩哔哩热门", path: "/bilibili", active: false },
   { name: "豆瓣", path: "/douban", active: false },
   { name: "图片", path: "/pic", active: false },
@@ -22,6 +22,9 @@ watch(
     links.forEach((item) => {
       item.active = route.path == item.path;
     });
+  },
+  {
+    deep: true,
   }
 );
 </script>

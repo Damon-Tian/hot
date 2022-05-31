@@ -3,7 +3,8 @@ import { createRouter, createWebHistory } from "vue-router";
 const router = [
   {
     path: "/",
-    redirect: "/zhihu",
+    alias: "/zhihu",
+    component: () => import("../pages/zhihu.vue"),
   },
   {
     path: "/home",
@@ -16,10 +17,6 @@ const router = [
   {
     path: "/douban",
     component: () => import("../pages/douban.vue"),
-  },
-  {
-    path: "/zhihu",
-    component: () => import("../pages/zhihu.vue"),
   },
   {
     path: "/pic",
